@@ -23,6 +23,14 @@ jobs:
                   coverage: none
                   tools: composer:v2, cs2pr
 
+            - name: Cache Composer dependencies
+              uses: actions/cache@v4
+              with:
+                path: ~/.composer/cache/files
+                key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+                restore-keys: |
+                  ${{ runner.os }}-composer-
+
             - run: composer update --no-progress
 
             - run: vendor/bin/phpcs -q --report=checkstyle | cs2pr
@@ -66,6 +74,15 @@ jobs:
 
             - run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
+            - name: Cache Composer dependencies
+              uses: actions/cache@v4
+              with:
+                path: ~/.composer/cache/files
+                key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
+                restore-keys: |
+                  ${{ runner.os }}-composer-${{ matrix.php }}-
+                  ${{ runner.os }}-composer-
+
             - run: composer update --no-progress ${{ matrix.composer-flags }}
 
             - run: vendor/bin/phpunit --no-coverage
@@ -92,6 +109,14 @@ jobs:
                   coverage: none
                   tools: composer:v2
 
+            - name: Cache Composer dependencies
+              uses: actions/cache@v4
+              with:
+                path: ~/.composer/cache/files
+                key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+                restore-keys: |
+                  ${{ runner.os }}-composer-
+
             - run: composer update --no-progress
 
             - run: vendor/bin/phpstan analyse --no-progress
@@ -110,6 +135,14 @@ jobs:
                   coverage: none
                   tools: composer:v2
 
+            - name: Cache Composer dependencies
+              uses: actions/cache@v4
+              with:
+                path: ~/.composer/cache/files
+                key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+                restore-keys: |
+                  ${{ runner.os }}-composer-
+
             - run: composer update --no-progress
 
             - run: vendor/bin/psalm --no-progress --output-format=github
@@ -127,6 +160,14 @@ jobs:
                   extensions: curl, mbstring
                   coverage: none
                   tools: composer:v2
+
+            - name: Cache Composer dependencies
+              uses: actions/cache@v4
+              with:
+                path: ~/.composer/cache/files
+                key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+                restore-keys: |
+                  ${{ runner.os }}-composer-
 
             - run: composer update --no-progress
 
